@@ -127,6 +127,58 @@ a {
   margin-bottom: 26px;
 }
 
+@media (max-width: 640px) {
+  .login-wrapper {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .login-card {
+    flex-direction: column;
+    max-width: 420px;
+    min-height: auto;
+  }
+
+  .login-left {
+    padding: 28px 20px 40px;
+  }
+
+  .login-left .cap-icon {
+    font-size: 42px;
+    margin-bottom: 10px;
+  }
+
+  .login-left h1 {
+    font-size: 20px;
+  }
+
+  .login-left h1 span {
+    font-size: 17px;
+  }
+
+  .login-left p.tagline {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .login-left .divider {
+    margin: 12px auto;
+  }
+
+  .wave {
+    height: 50px;
+  }
+
+  .login-right {
+    padding: 28px 22px 32px;
+  }
+
+  .login-right h2 {
+    font-size: 20px;
+  }
+}
+
 .form-group {
   margin-bottom: 18px;
   position: relative;
@@ -1041,5 +1093,47 @@ tbody tr:hover {
   }
   .container {
     padding: 20px 16px 40px;
+  }
+
+  .topbar {
+    padding: 14px 16px;
+  }
+  .page-title {
+    font-size: 17px;
+  }
+  .date-pill {
+    display: none; /* saves space on small screens; date is secondary info */
+  }
+  .admin-info span {
+    display: none;
+  }
+
+  .welcome-banner {
+    padding: 18px 20px;
+  }
+  .welcome-illustration {
+    display: none;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  .form-actions .btn {
+    width: 100%;
   }
 }
