@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Student | Student Management System</title>
+  <link rel="stylesheet" href="/css/style.css?v=2" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <%- include('partials/sidebar') %>
+
+    <div class="main-content" id="mainContent">
+      <%- include('partials/topbar') %>
+
+      <div class="container">
+        <div class="search-panel">
+          <div class="search-panel-header">
+            <div class="icon-box">🔍</div>
+            <div>
+              <h3 style="font-size:17px;">Search Student</h3>
+              <p style="color:var(--text-muted); font-size:13px;">Search student by Name, Roll Number or Student ID.</p>
+            </div>
+          </div>
+
+          <form action="/students/search" method="GET" class="search-fields-grid">
+            <div>
+              <label for="searchBy">Search By</label>
+              <select id="searchBy" name="searchBy">
+                <option value="" <%= searchBy === '' ? 'selected' : '' %>>Select Option</option>
+                <option value="Name" <%= searchBy === 'Name' ? 'selected' : '' %>>Name</option>
+                <option value="RollNo" <%= searchBy === 'RollNo' ? 'selected' : '' %>>Roll Number</option>
+                <option value="StudentID" <%= searchBy === 'StudentID' ? 'selected' : '' %>>Student ID</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="searchValue">Search Value</label>
+              <div class="input-icon-wrapper">
+                <span class="icon-left">🔍</span>
+                <input type="text" id="searchValue" name="searchValue" placeholder="Enter search value..." style="padding-left: 40px;" value="<%= searchValue %>" />
+              </div>
+            </div>
+
+            <div>
+              <label for="course">Course (Optional)</label>
+              <select id="course" name="course">
+                <option value="">All Courses</option>
+                <% courses.forEach(function(c) { %>
+                  <option value="<%= c %>" <%= course === c ? 'selected' : '' %>><%= c %></option>
+                <% }); %>
+              </select>
+            </div>
+
+            <button type="submit" class="btn">🔍 Search</button>
+            <a href="/students/search" class="btn btn-outline">🔄 Reset</a>
+          </form>
+
+          <div class="info-note" style="margin-top:20px;">ℹ️ You can search by Name, Roll Number or Student ID.</div>
+        </div>
+
+        <div class="results-header">
+          <div>
+            <h3>Search Results</h3>
+            <% if (searched && searchValue) { %>
+              <p>Showing results for: <strong class="badge-chip">"<%= searchValue %>"</strong></p>
+            <% } else if (searched) { %>
+              <p>Showing filtered results.</p>
+            <% } else { %>
+              <p>Enter search criteria above to find a student.</p>
+            <% } %>
+          </div>
+          <div class="mini-stat">
+            <strong><%= stats.totalStudents %></strong>
+            <span>Total Students</span>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <% if (!searched) { %>
+            <div class="empty-state"><p>Search karne ke liye upar diye gaye fields bharein.</p></div>
+          <% } else if (students.length === 0) { %>
+            <div class="empty-state"><p>Diye gaye criteria ke liye koi student nahi mila.</p></div>
+          <% } else { %>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Roll Number</th>
+                  <th>Course</th>
+                  <th>Semester</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% students.forEach(function(s, idx) { %>
+                  <tr>
+                    <td><%= idx + 1 %></td>
+                    <td><%= s.StudentID %></td>
+                    <td><%= s.Name %></td>
+                    <td><%= s.RollNo %></td>
+                    <td><%= s.Course %></td>
+                    <td><%= s.Semester %></td>
+                    <td><%= s.Mobile %></td>
+                    <td><%= s.Email %></td>
+                    <td>
+                      <div class="action-icons">
+                        <a href="/students/view/<%= s._id %>" class="icon-btn view" title="View">👁</a>
+                        <a href="/students/edit/<%= s._id %>" class="icon-btn edit" title="Edit">✏️</a>
+                        <form action="/students/delete/<%= s._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Kya aap sach mein is student ko delete karna chahte hain?');">
+                          <button type="submit" class="icon-btn delete" title="Delete">🗑</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <div class="table-footer">
+              <div class="entries-info">Showing 1 to <%= students.length %> of <%= students.length %> entries</div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>© <%= new Date().getFullYear() %> Student Management System. All rights reserved.</span>
+        <span>Designed with ❤️ for better education.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

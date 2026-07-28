@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Details | Student Management System</title>
+  <link rel="stylesheet" href="/css/style.css?v=2" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <%- include('partials/sidebar') %>
+
+    <div class="main-content" id="mainContent">
+      <%- include('partials/topbar') %>
+
+      <div class="container">
+        <div class="top-bar">
+          <div class="top-bar-heading">
+            <h2>Student Details</h2>
+            <p>Complete profile of <%= student.Name %>.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <a href="/students/edit/<%= student._id %>" class="btn">✏️ Edit</a>
+            <a href="/students" class="btn btn-outline">⬅ Back to List</a>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-header">
+            <div class="form-icon">🎓</div>
+            <div>
+              <h3><%= student.Name %></h3>
+              <p>Student ID: <%= student.StudentID %></p>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Student ID</label>
+              <p><%= student.StudentID %></p>
+            </div>
+            <div class="detail-item">
+              <label>Name</label>
+              <p><%= student.Name %></p>
+            </div>
+            <div class="detail-item">
+              <label>Roll Number</label>
+              <p><%= student.RollNo %></p>
+            </div>
+            <div class="detail-item">
+              <label>Course</label>
+              <p><%= student.Course %></p>
+            </div>
+            <div class="detail-item">
+              <label>Semester</label>
+              <p>Semester <%= student.Semester %></p>
+            </div>
+            <div class="detail-item">
+              <label>Mobile Number</label>
+              <p><%= student.Mobile %></p>
+            </div>
+            <div class="detail-item">
+              <label>Email</label>
+              <p><%= student.Email %></p>
+            </div>
+            <div class="detail-item">
+              <label>Added On</label>
+              <p><%= new Date(student.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>© <%= new Date().getFullYear() %> Student Management System. All rights reserved.</span>
+        <span>Designed with ❤️ for better education.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">🎓</div>
+    <div>
+      <h2>STUDENT</h2>
+      <span>MANAGEMENT SYSTEM</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="/dashboard" class="nav-link <%= active === 'dashboard' ? 'active' : '' %>">
+      <span class="nav-icon">🏠</span> Dashboard
+    </a>
+    <a href="/students/add" class="nav-link <%= active === 'add' ? 'active' : '' %>">
+      <span class="nav-icon">➕</span> Add Student
+    </a>
+    <a href="/students" class="nav-link <%= active === 'view' ? 'active' : '' %>">
+      <span class="nav-icon">👥</span> View Students
+    </a>
+    <a href="/students/search" class="nav-link <%= active === 'search' ? 'active' : '' %>">
+      <span class="nav-icon">🔍</span> Search Student
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="/logout" class="nav-link logout-link">
+      <span class="nav-icon">🚪</span> Logout
+    </a>
+  </div>
+
+  <div class="sidebar-illustration">📚🎓🪴</div>
+</aside>

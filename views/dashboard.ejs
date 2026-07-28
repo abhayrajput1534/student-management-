@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Student Management System</title>
+  <link rel="stylesheet" href="/css/style.css?v=2" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <%- include('partials/sidebar') %>
+
+    <div class="main-content" id="mainContent">
+      <%- include('partials/topbar') %>
+
+      <div class="container">
+        <div class="welcome-banner">
+          <div>
+            <h2>Welcome back, Admin! 👋</h2>
+            <p>Here's what's happening with your students today.</p>
+          </div>
+          <div class="welcome-illustration">🖥️📊🪴</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon purple">👥</div>
+            <div>
+              <h3><%= stats.totalStudents %></h3>
+              <p>Total Students<br />All Registered Students</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🎓</div>
+            <div>
+              <h3><%= stats.totalCourses %></h3>
+              <p>Total Courses<br />Active Courses</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">📄</div>
+            <div>
+              <h3><%= stats.totalSemesters %></h3>
+              <p>Total Semesters<br />Available Semesters</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">👤</div>
+            <div>
+              <h3><%= stats.totalUsers %></h3>
+              <p>Total Users<br />System Users</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-heading">Quick Actions</div>
+            <div class="quick-actions-grid">
+              <a href="/students/add" class="quick-action-card qa-purple">
+                <div class="qa-icon">➕</div>
+                <div><strong>Add Student</strong><small>Register New Student</small></div>
+              </a>
+              <a href="/students" class="quick-action-card qa-green">
+                <div class="qa-icon">👥</div>
+                <div><strong>View Students</strong><small>View All Students</small></div>
+              </a>
+              <a href="/students/search" class="quick-action-card qa-blue">
+                <div class="qa-icon">🔍</div>
+                <div><strong>Search Student</strong><small>Search Student Records</small></div>
+              </a>
+              <a href="/logout" class="quick-action-card qa-orange">
+                <div class="qa-icon">🚪</div>
+                <div><strong>Logout</strong><small>Logout from System</small></div>
+              </a>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">Students Overview (Last 5 Weeks)</div>
+            <div class="chart-container">
+              <canvas id="studentsChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-heading">Recent Students</div>
+          <div class="table-wrapper">
+            <% if (recentStudents.length === 0) { %>
+              <div class="empty-state"><p>Abhi tak koi student add nahi hua hai.</p></div>
+            <% } else { %>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Roll Number</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% recentStudents.forEach(function(s) { %>
+                    <tr>
+                      <td><%= s.StudentID %></td>
+                      <td><%= s.Name %></td>
+                      <td><%= s.RollNo %></td>
+                      <td><%= s.Course %></td>
+                      <td><%= s.Semester %></td>
+                      <td><%= s.Mobile %></td>
+                      <td><%= s.Email %></td>
+                      <td><a href="/students/view/<%= s._id %>" class="btn btn-outline" style="padding:6px 12px; font-size:12px;">View</a></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            <% } %>
+          </div>
+          <div style="text-align:center; margin-top:18px;">
+            <a href="/students" class="btn">View All Students</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>© <%= new Date().getFullYear() %> Student Management System. All rights reserved.</span>
+        <span>Designed with ❤️ for better education.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    renderStudentsChart(<%- JSON.stringify(chartData.labels) %>, <%- JSON.stringify(chartData.counts) %>);
+  </script>
+</body>
+</html>

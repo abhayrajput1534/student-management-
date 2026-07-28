@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Student | Student Management System</title>
+  <link rel="stylesheet" href="/css/style.css?v=2" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <%- include('partials/sidebar') %>
+
+    <div class="main-content" id="mainContent">
+      <%- include('partials/topbar') %>
+
+      <div class="container">
+        <div class="form-card">
+          <div class="form-header">
+            <div class="form-icon">➕</div>
+            <div>
+              <h3>Add New Student</h3>
+              <p>Enter the details of the new student.</p>
+            </div>
+          </div>
+
+          <% if (error) { %>
+            <div class="error-msg"><%= error %></div>
+          <% } %>
+
+          <form action="/students/add" method="POST">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="StudentID">Student ID</label>
+                <input type="text" id="StudentID" name="StudentID" placeholder="Enter Student ID" value="<%= formData.StudentID || '' %>" required />
+              </div>
+
+              <div class="form-group">
+                <label for="Name">Name</label>
+                <input type="text" id="Name" name="Name" placeholder="Enter Full Name" value="<%= formData.Name || '' %>" required />
+              </div>
+
+              <div class="form-group">
+                <label for="RollNo">Roll Number</label>
+                <input type="text" id="RollNo" name="RollNo" placeholder="Enter Roll Number" value="<%= formData.RollNo || '' %>" required />
+              </div>
+
+              <div class="form-group">
+                <label for="Course">Course</label>
+                <select id="Course" name="Course" required>
+                  <option value="" disabled <%= !formData.Course ? 'selected' : '' %>>Select Course</option>
+                  <% courses.forEach(function(c) { %>
+                    <option value="<%= c %>" <%= formData.Course === c ? 'selected' : '' %>><%= c %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="Semester">Semester</label>
+                <select id="Semester" name="Semester" required>
+                  <option value="" disabled <%= !formData.Semester ? 'selected' : '' %>>Select Semester</option>
+                  <% semesters.forEach(function(s) { %>
+                    <option value="<%= s %>" <%= String(formData.Semester) === String(s) ? 'selected' : '' %>>Semester <%= s %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="Mobile">Mobile Number</label>
+                <div class="input-icon-wrapper">
+                  <span class="icon-left">📞</span>
+                  <input type="text" id="Mobile" name="Mobile" placeholder="Enter Mobile Number" style="padding-left: 40px;" value="<%= formData.Mobile || '' %>" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="Email">Email</label>
+                <div class="input-icon-wrapper">
+                  <span class="icon-left">✉️</span>
+                  <input type="email" id="Email" name="Email" placeholder="Enter Email Address" style="padding-left: 40px;" value="<%= formData.Email || '' %>" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="info-note">ℹ️ <strong>Note:</strong> Please make sure all the information is correct before submitting.</div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-outline">🔄 Reset</button>
+              <button type="submit" class="btn">💾 Save Student</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>© <%= new Date().getFullYear() %> Student Management System. All rights reserved.</span>
+        <span>Designed with ❤️ for better education.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

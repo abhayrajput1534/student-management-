@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Students | Student Management System</title>
+  <link rel="stylesheet" href="/css/style.css?v=2" />
+</head>
+<body>
+  <div class="app-wrapper">
+    <%- include('partials/sidebar') %>
+
+    <div class="main-content" id="mainContent">
+      <%- include('partials/topbar') %>
+
+      <div class="container">
+        <div class="top-bar">
+          <div class="top-bar-heading">
+            <h2>All Students</h2>
+            <p>View all registered students in the system.</p>
+          </div>
+          <a href="/students/add" class="btn">➕ Add New Student</a>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon purple">👥</div>
+            <div><h3><%= stats.totalStudents %></h3><p>Total Students</p></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🎓</div>
+            <div><h3><%= stats.totalCourses %></h3><p>Total Courses</p></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">📄</div>
+            <div><h3><%= stats.totalSemesters %></h3><p>Total Semesters</p></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">👤</div>
+            <div><h3><%= stats.totalUsers %></h3><p>Total Users</p></div>
+          </div>
+        </div>
+
+        <form action="/students" method="GET" class="filter-bar">
+          <div class="search-input-wrap">
+            <span>🔍</span>
+            <input type="text" name="query" placeholder="Search by Name, Roll No or Student ID..." value="<%= query %>" />
+          </div>
+
+          <select name="course">
+            <option value="">Select Course</option>
+            <% courses.forEach(function(c) { %>
+              <option value="<%= c %>" <%= course === c ? 'selected' : '' %>><%= c %></option>
+            <% }); %>
+          </select>
+
+          <select name="semester">
+            <option value="">Select Semester</option>
+            <% semesters.forEach(function(s) { %>
+              <option value="<%= s %>" <%= String(semester) === String(s) ? 'selected' : '' %>>Semester <%= s %></option>
+            <% }); %>
+          </select>
+
+          <button type="submit" class="btn">🔍 Search</button>
+          <a href="/students" class="btn btn-outline">🔄 Reset</a>
+        </form>
+
+        <div class="table-wrapper">
+          <% if (students.length === 0) { %>
+            <div class="empty-state">
+              <% if (query || course || semester) { %>
+                <p>Diye gaye filters ke liye koi student nahi mila.</p>
+              <% } else { %>
+                <p>Abhi tak koi student add nahi hua hai.</p>
+              <% } %>
+            </div>
+          <% } else { %>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Roll Number</th>
+                  <th>Course</th>
+                  <th>Semester</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% students.forEach(function(s, idx) { %>
+                  <tr>
+                    <td><%= (currentPage - 1) * pageSize + idx + 1 %></td>
+                    <td><%= s.StudentID %></td>
+                    <td><%= s.Name %></td>
+                    <td><%= s.RollNo %></td>
+                    <td><%= s.Course %></td>
+                    <td><%= s.Semester %></td>
+                    <td><%= s.Mobile %></td>
+                    <td><%= s.Email %></td>
+                    <td>
+                      <div class="action-icons">
+                        <a href="/students/view/<%= s._id %>" class="icon-btn view" title="View">👁</a>
+                        <a href="/students/edit/<%= s._id %>" class="icon-btn edit" title="Edit">✏️</a>
+                        <form action="/students/delete/<%= s._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Kya aap sach mein is student ko delete karna chahte hain?');">
+                          <button type="submit" class="icon-btn delete" title="Delete">🗑</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+
+            <div class="table-footer">
+              <div class="entries-info">
+                Showing <%= (currentPage - 1) * pageSize + 1 %> to <%= Math.min(currentPage * pageSize, totalFiltered) %> of <%= totalFiltered %> entries
+              </div>
+              <div class="pagination">
+                <% const qs = (p) => `?query=${encodeURIComponent(query)}&course=${encodeURIComponent(course)}&semester=${encodeURIComponent(semester)}&page=${p}`; %>
+                <a href="<%= qs(Math.max(currentPage - 1, 1)) %>">«</a>
+                <% for (let p = 1; p <= totalPages; p++) { %>
+                  <a href="<%= qs(p) %>" class="<%= p === currentPage ? 'active' : '' %>"><%= p %></a>
+                <% } %>
+                <a href="<%= qs(Math.min(currentPage + 1, totalPages)) %>">»</a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>© <%= new Date().getFullYear() %> Student Management System. All rights reserved.</span>
+        <span>Designed with ❤️ for better education.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
