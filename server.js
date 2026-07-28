@@ -1,11 +1,11 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const methodOverride = require("method-override");
 const path = require("path");
 
+const dbConnect = require("./config/db");
 const studentRoutes = require("./routes/studentRoutes");
 
 const app = express();
@@ -46,12 +46,17 @@ app.use(
 );
 
 // ---------- MongoDB Connection ----------
-mongoose
-  .connect(MONGO_URI, {
-    serverSelectionTimeoutMS: 8000, // fail fast with a real error instead of a vague buffering timeout
-  })
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+// Ensure the (cached) connection is ready before any route handler runs -
+// critical in serverless environments where a cold start could otherwise
+// let a query fire before the connection exists.
+app.use(async (req, res, next) => {
+  try {
+    await dbConnect();
+    next();
+  } catch (err) {
+    res.status(500).send("Database connection error. Please try again in a moment.");
+  }
+});
 
 // ---------- Auth Middleware ----------
 function isLoggedIn(req, res, next) {
