@@ -11,6 +11,12 @@ const studentRoutes = require("./routes/studentRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Vercel (and most hosting platforms) sit behind a reverse proxy that
+// terminates HTTPS. Without this, Express doesn't know the original request
+// was secure, so a "secure" session cookie never gets set/sent correctly -
+// causing the user to bounce back to the login page after logging in.
+app.set("trust proxy", 1);
+
 // ---------- Middleware ----------
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
